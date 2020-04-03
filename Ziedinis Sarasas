@@ -128,7 +128,31 @@ void ziedas::MestiPirma()
 }
 void ziedas::Rikiuok()
 {
-    
+    node *current = pr, *index = NULL;
+    int temp;
+    if(pr==NULL)
+    {
+        cout<<"List is empty"<<endl;
+    }
+    else
+    {
+        do
+        {
+            index=current->next;
+            while (index!=pr)
+            {
+                if(current->duom>index->duom)
+                {
+                    temp=current->duom;
+                    current->duom=index->duom;
+                    index->duom=temp;
+                }
+                index=index->next;
+            }
+            current=current->next;
+        }
+        while(current->next!=pr);
+    }
 }
 int main()
 {
@@ -136,7 +160,8 @@ int main()
     x.Formuoti("Duomenys.txt");
     //x.Naikinti();
     //x.MestiDid();
-    x.MestiPirma();
+    //x.MestiPirma();
+    x.Rikiuok();
     x.Spausdinti("Duotas: ");
     return 0;
 }
