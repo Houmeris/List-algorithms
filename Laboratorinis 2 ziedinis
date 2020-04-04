@@ -6,49 +6,32 @@ class ziedas
 private:
     struct node
     {
-        int duom, duom2;
+        string duom, duom2, duom3, duom4, duom5;
         node *next;
     };
     node *pr;
     node *pb;
 public:
     ziedas();
-    ~ziedas(){Naikinti();}
-    void padeti(int sk, int sk2);
+    void padeti(string a, string a2, string a3, string a4, string a5);
     void Formuoti(const string fv);
     void Spausdinti(const string tekstas);
-    void Naikinti();
-    void Mesti(node *rm);
-    void MestiDid();
-    void MestiPirma();
     void Rikiuok();
-    node *RastiDid()
-    {
-        node *r = pr;
-        if(pr)
-        {
-            node *d=pr->next;
-            while(d!=pr)
-            {
-                if(d->duom>r->duom)
-                    r=d;
-                d=d->next;
-            }
-
-        }
-        return r;
-    };
+    void Count();
 };
 ziedas::ziedas()
 {
     pr=NULL;
     pb=NULL;
 }
-void ziedas::padeti(int sk, int sk2)
+void ziedas::padeti(string a, string a2, string a3, string a4, string a5)
 {
     node *d = new node;
-    d->duom=sk;
-    d->duom2=sk2;
+    d->duom=a;
+    d->duom2=a2;
+    d->duom3=a3;
+    d->duom4=a4;
+    d->duom5=a5;
     d->next=pr;
     pr=d;
     if(pb==NULL) pb=pr;
@@ -57,13 +40,12 @@ void ziedas::padeti(int sk, int sk2)
 void ziedas::Formuoti(const string fv)
 {
     ifstream fd (fv.c_str());
-    int sk, sk2;
+    string a, a2, a3, a4, a5;
     pr = pb = NULL;
     while(!fd.eof())
     {
-        fd>>sk>>sk2;
-        padeti(sk, sk2);
-        //padeti(sk2);
+        fd>>a>>a2>>a3>>a4>>a5;
+        padeti(a, a2, a3, a4, a5);
     }
     fd.close();
 }
@@ -73,65 +55,20 @@ void ziedas::Spausdinti(const string tekstas)
     if(r!=NULL)
     {
     cout<<tekstas<<endl;
-    cout<<r->duom<<" "<<r->duom2<<endl;
+    cout<<r->duom<<" "<<r->duom2<<" "<<r->duom3<<" "<<r->duom4<<" "<<r->duom5<<endl;
     r=r->next;
     while(r!=pr)
     {
-        cout<<r->duom<<" "<<r->duom2<<endl;
+        cout<<r->duom<<" "<<r->duom2<<" "<<r->duom3<<" "<<r->duom4<<" "<<r->duom5<<endl;
         r=r->next;
     }
     cout<<endl;
-    //cout<<RastiDid()<<endl;
     }
-
-}
-void ziedas::Naikinti()
-{
-    if(pb!=NULL)
-    {
-        pb->next=NULL;
-        while(pr)
-        {
-            pb=pr;
-            pr=pr->next;
-            delete pb;
-
-        }
-    }
-    pb=NULL;
-}
-void ziedas::Mesti(node *rm)
-{
-    node *rpries=pr;
-    if(pr)
-    {
-        if(pr==rm && pr->next==pr)
-        {
-            delete pr;
-            pr=NULL;
-        }
-        else
-        {
-            if(rm==pr) pr=pr->next;
-            while(rpries->next!=rm)
-                rpries=rpries->next;
-            rpries->next=rm->next;
-            delete rm;
-        }
-    }
-}
-void ziedas::MestiDid()
-{
-    Mesti(RastiDid());
-}
-void ziedas::MestiPirma()
-{
-    Mesti(pr);
 }
 void ziedas::Rikiuok()
 {
     node *current = pr, *index = NULL;
-    int temp;
+    string temp, temp2, temp3, temp4, temp5;
     if(pr==NULL)
     {
         cout<<"List is empty"<<endl;
@@ -143,14 +80,23 @@ void ziedas::Rikiuok()
             index=current->next;
             while (index!=pr)
             {
-                if(current->duom>index->duom)
+                if(current->duom2>index->duom2)
                 {
+                    temp2=current->duom2;
+                    current->duom2=index->duom2;
+                    index->duom2=temp2;
                     temp=current->duom;
                     current->duom=index->duom;
                     index->duom=temp;
-                    temp=current->duom2;//
-                    current->duom2=index->duom2;
-                    index->duom2=temp;
+                    temp3=current->duom3;
+                    current->duom3=index->duom3;
+                    index->duom3=temp3;
+                    temp4=current->duom4;
+                    current->duom4=index->duom4;
+                    index->duom4=temp4;
+                    temp5=current->duom5;
+                    current->duom5=index->duom5;
+                    index->duom5=temp5;
                 }
                 index=index->next;
             }
@@ -159,14 +105,43 @@ void ziedas::Rikiuok()
         while(current->next!=pr);
     }
 }
+void ziedas::Count()
+{
+    node *current = pr;
+    node *index=NULL;
+    int k=0, o=0;
+    int Counted;
+        do
+        {
+            Counted=0;
+            index=current->next;
+            while (index!=pr)
+            {
+                if(current->duom2==current->next->duom2 && current->duom2!=index->next->duom2)
+                {
+                    k=k+2;
+                    Counted=1;
+
+                }
+                else if(current->duom2==current->next->duom2)
+                {
+                    k++;
+                    Counted=1;
+                }
+                current=current->next;
+                index=index->next;
+            }
+        }
+        while(Counted);
+    cout<<"Yra "<<k<<" bendravardziu"<<endl;
+}
 int main()
 {
     ziedas x;
     x.Formuoti("Duomenys.txt");
-    //x.Naikinti();
-    //x.MestiDid();
-    //x.MestiPirma();
     x.Rikiuok();
-    x.Spausdinti("Duotas: ");
+    x.Spausdinti("Sarasas: ");
+    x.Count();
+
     return 0;
 }
