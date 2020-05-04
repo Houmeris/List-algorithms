@@ -6,18 +6,20 @@ class listas
 private:
 struct node
 {
-string data, data2, data3;
-node *next;
+    string data, data2, data3;
+    node *next;
 };
-node *n;
-node *e;
+    node *n;
+    node *e;
 public:
     listas();
     void push(string x, string z, string y);
     string top();
     string pop();
+    string pop2();
+    string pop3();
     void Formuoti(string fv);
-    void ISort(listas & A, string op);
+    void ISort(listas & A, string op, string ip, string up);
     void Sort(listas & A);
     node *t;
 };
@@ -27,12 +29,12 @@ listas::listas()
 }
 void listas::push(string x, string z, string y)
 {
-n = new node;
-n->next = t;
-t = n;
-t->data = x;
-t->data2 = z;
-t->data3 = y;
+    n = new node;
+    n->next = t;
+    t = n;
+    t->data = x;
+    t->data2 = z;
+    t->data3 = y;
 }
 void listas::Formuoti(string fv)
 {
@@ -46,9 +48,7 @@ void listas::Formuoti(string fv)
 }
 string listas::top()
 {
-return t-> data;
-return t-> data2;
-return t-> data3;
+    return t-> data + " " + t->data2 + " " + t->data3;
 }
 string listas::pop()
 {
@@ -57,21 +57,23 @@ string listas::pop()
       node *Temp = t;
       t = t->next;
       string b = Temp->data;
+      string c = Temp->data2;
+      string d = Temp->data3;
       delete Temp;
-      return b;
+      return b + " " + c + " " + d;
     }
   else
     cout << "Stack Empty..";
 }
-/*void listas::ISort(listas & A, string op)
+void listas::ISort(listas & A, string op, string ip, string up)
 {
-    if (t == NULL || t->data > op )
-        A.push(op);
+    if (t == NULL || (t->data > op && t->data2 > ip) )
+        A.push(op, ip, up);
     else
     {
       string l = A.pop();
-      ISort (A, op);
-      A.push (l);
+      ISort (A, op, ip, up);
+      A.push (l, "", "");
     }
 }
 
@@ -81,9 +83,9 @@ void listas::Sort(listas & A)
     {
       string f= A.pop();
       Sort(A);
-      ISort(A, f);
+      ISort(A, f, "", "");
     }
-}*/
+}
 int main()
 {
     listas x;
@@ -96,7 +98,7 @@ int main()
         a=a+" "+b+" "+c;
         x.push(a);
     }*/
-    //x.Sort(x);
+    x.Sort(x);
     cout << "Sukurtas stekas:\n";
     while(x.t->next != NULL)
     {
